@@ -1,0 +1,600 @@
+{
+  "$schema": "https://raw.githubusercontent.com/wasi-master/wmkeyboard-monkeytype-sounds/main/docs/wmkeyboard-repo.schema.json",
+  "format": "wmkeyboard-repo",
+  "version": 1,
+  "repo": {
+    "id": "com.wasimaster.wmkeyboard.monkeytype",
+    "name": "Monkeytype Key Sounds",
+    "description": "Monkeytype's key sounds as WM Keyboard sound packs — every recording of each set, picked at random per keystroke, the way monkeytype plays them.",
+    "author": "Wasi Master",
+    "homepage": "https://github.com/wasi-master/wmkeyboard-monkeytype-sounds",
+    "icon": "previews/icon.png",
+    "updatedAt": "2026-08-07"
+  },
+  "addons": [
+    {
+      "id": "click",
+      "type": "sound_pack",
+      "name": "Click",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "Monkeytype's default: a dry, very short interface click with no body under it. The quietest thing in the pack and the easiest to type on for hours.",
+      "tags": [
+        "click",
+        "crisp",
+        "default"
+      ],
+      "path": "packs/click.wmsoundpack",
+      "sha256": "79bc9bb5c8d11c3990738e2570d76398db74cb0a39c21cdc365194af2aededd9",
+      "sizeBytes": 5891,
+      "previews": [
+        "previews/click.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "beep",
+      "type": "sound_pack",
+      "name": "Beep",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "A short digital beep — a pitched tone rather than a physical impact. Cuts through a noisy room where the click disappears.",
+      "tags": [
+        "beep",
+        "digital",
+        "sharp"
+      ],
+      "path": "packs/beep.wmsoundpack",
+      "sha256": "a945754c0eb664740602284583bc8c82f4264988a7f615d08c6786864da88a07",
+      "sizeBytes": 10453,
+      "previews": [
+        "previews/beep.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "pop",
+      "type": "sound_pack",
+      "name": "Pop",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "A soft bubble pop: a low blip with a quick downward bend and almost no attack. Rounded where Click is dry.",
+      "tags": [
+        "pop",
+        "soft",
+        "bubble"
+      ],
+      "path": "packs/pop.wmsoundpack",
+      "sha256": "948e6c167daad36d608d4524cfacc83f8be628657f7244ad48bc0f0527243d2a",
+      "sizeBytes": 10792,
+      "previews": [
+        "previews/pop.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "nk-creams",
+      "type": "sound_pack",
+      "name": "NK Creams",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "Novelkeys Cream linears: the deep, hollow POM sound those switches are bought for. Six recordings, so the same key never sounds identical twice.",
+      "tags": [
+        "switch",
+        "creams",
+        "linear",
+        "deep"
+      ],
+      "path": "packs/nk-creams.wmsoundpack",
+      "sha256": "79c0ccca5c5c7c98d89e633f1a1d3e4666246e80516b044c84f965133c4ee66b",
+      "sizeBytes": 60811,
+      "previews": [
+        "previews/nk-creams.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "typewriter",
+      "type": "sound_pack",
+      "name": "Typewriter",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "A real typebar striking the platen, with the carriage rattle left in. Six recordings — the variation is most of the effect.",
+      "tags": [
+        "typewriter",
+        "vintage",
+        "mechanical"
+      ],
+      "path": "packs/typewriter.wmsoundpack",
+      "sha256": "5edc22945a008baa78b3edf831a95dba6c5682110fa59b2602a853a63399f6ad",
+      "sizeBytes": 112451,
+      "previews": [
+        "previews/typewriter.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "osu",
+      "type": "sound_pack",
+      "name": "Osu",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "The hitsound from osu!: a bright, percussive tap with a metallic edge. Reads as a score rather than a keystroke.",
+      "tags": [
+        "game",
+        "rhythm",
+        "hit"
+      ],
+      "path": "packs/osu.wmsoundpack",
+      "sha256": "74bacfb81b89475b76e0fd29a10de827e72792e9402e00e6ed2b301e16687353",
+      "sizeBytes": 28656,
+      "previews": [
+        "previews/osu.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "hitmarker",
+      "type": "sound_pack",
+      "name": "Hitmarker",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "The shooter hitmarker tick — a tight, high, unmistakably digital confirmation. Every letter is a headshot.",
+      "tags": [
+        "game",
+        "hitmarker",
+        "shooter"
+      ],
+      "path": "packs/hitmarker.wmsoundpack",
+      "sha256": "51ab027831a9aaacff63c03e7f66312036abc23cc5cbd43233d44053581ad1b1",
+      "sizeBytes": 15436,
+      "previews": [
+        "previews/hitmarker.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "fist-fight",
+      "type": "sound_pack",
+      "name": "Fist Fight",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "Body-blow impacts from a fight scene, eight of them. Typing a paragraph sounds like losing one.",
+      "tags": [
+        "punch",
+        "impact",
+        "novelty"
+      ],
+      "path": "packs/fist-fight.wmsoundpack",
+      "sha256": "b4e563baa5a8c70dc2cbb0091f740d3adcb328b232811b146bc0d3d00ee715d2",
+      "sizeBytes": 120136,
+      "previews": [
+        "previews/fist-fight.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "rubber-keys",
+      "type": "sound_pack",
+      "name": "Rubber Keys",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "A rubber-dome membrane board: dull, short and almost entirely without a click. The closest thing here to a laptop keyboard.",
+      "tags": [
+        "membrane",
+        "rubber",
+        "muted",
+        "quiet"
+      ],
+      "path": "packs/rubber-keys.wmsoundpack",
+      "sha256": "2849d3723527ac9a39a554854c0ead2399a69e54987af75d90c66ffd5ddebbc6",
+      "sizeBytes": 57651,
+      "previews": [
+        "previews/rubber-keys.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "fart",
+      "type": "sound_pack",
+      "name": "Fart",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "Eight of them. There is no defending this one; monkeytype ships it, so it is here.",
+      "tags": [
+        "novelty",
+        "joke",
+        "meme"
+      ],
+      "path": "packs/fart.wmsoundpack",
+      "sha256": "95d7934edc4eacb364883fcc1b5fa3828d50bf9e741b6ccddf9c1fcb7a9926f6",
+      "sizeBytes": 63283,
+      "previews": [
+        "previews/fart.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "akko-lavenders",
+      "type": "sound_pack",
+      "name": "Akko Lavenders",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "Akko Lavender linears: smooth, mid-pitched and even, with none of the tick a tactile leaves behind. Ten recordings.",
+      "tags": [
+        "switch",
+        "akko",
+        "linear",
+        "smooth"
+      ],
+      "path": "packs/akko-lavenders.wmsoundpack",
+      "sha256": "82e2125855f806ec76126411ccd0d75ebd878a8d29a055ebaf5040a1bfb8d990",
+      "sizeBytes": 96492,
+      "previews": [
+        "previews/akko-lavenders.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "cherrymx-black-abs",
+      "type": "sound_pack",
+      "name": "CherryMX Black ABS",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "Cherry MX Black linears under ABS keycaps — heavier and blunter than the PBT cut, with more plastic ring on top. Ten recordings.",
+      "tags": [
+        "switch",
+        "cherry",
+        "linear",
+        "abs"
+      ],
+      "path": "packs/cherrymx-black-abs.wmsoundpack",
+      "sha256": "43d863c07cdc2a9f0095ca1f0bc4fc9c2ec4caa3096ccaefe96a45c921e4845e",
+      "sizeBytes": 136555,
+      "previews": [
+        "previews/cherrymx-black-abs.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "cherrymx-black-pbt",
+      "type": "sound_pack",
+      "name": "CherryMX Black PBT",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "Cherry MX Black linears under PBT keycaps: the same switch as the ABS set, drier and a touch lower. Ten recordings.",
+      "tags": [
+        "switch",
+        "cherry",
+        "linear",
+        "pbt"
+      ],
+      "path": "packs/cherrymx-black-pbt.wmsoundpack",
+      "sha256": "3ae77d9733caa2cdae3b8ea3441f972d9e1d1a545c013455e99ed62f73ac9e07",
+      "sizeBytes": 92992,
+      "previews": [
+        "previews/cherrymx-black-pbt.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "cherrymx-blue-abs",
+      "type": "sound_pack",
+      "name": "CherryMX Blue ABS",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "Cherry MX Blue clickies under ABS keycaps — the click jacket's sharp double tick, the sound most people picture when they hear \"mechanical keyboard\". Ten recordings.",
+      "tags": [
+        "switch",
+        "cherry",
+        "clicky",
+        "abs"
+      ],
+      "path": "packs/cherrymx-blue-abs.wmsoundpack",
+      "sha256": "f66fe008501a8f5e4981c206a7d5e67b21e1d243652e0856a2320682e72907fa",
+      "sizeBytes": 136289,
+      "previews": [
+        "previews/cherrymx-blue-abs.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "cherrymx-blue-pbt",
+      "type": "sound_pack",
+      "name": "CherryMX Blue PBT",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "Cherry MX Blue clickies under PBT keycaps: the same click with a denser, less hollow tail. Ten recordings.",
+      "tags": [
+        "switch",
+        "cherry",
+        "clicky",
+        "pbt"
+      ],
+      "path": "packs/cherrymx-blue-pbt.wmsoundpack",
+      "sha256": "0cef3968b40a82a30714e0bcd76e5b19086c868067dcdf8c39d65ed7cb65cea3",
+      "sizeBytes": 139262,
+      "previews": [
+        "previews/cherrymx-blue-pbt.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "cherrymx-brown-pbt",
+      "type": "sound_pack",
+      "name": "CherryMX Brown PBT",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "Cherry MX Brown tactiles under PBT keycaps — a small bump and a quiet, restrained sound. The office-safe Cherry. Ten recordings.",
+      "tags": [
+        "switch",
+        "cherry",
+        "tactile",
+        "pbt"
+      ],
+      "path": "packs/cherrymx-brown-pbt.wmsoundpack",
+      "sha256": "f578ed0131ade77d9a6aacc86c138c04f62f2613b69f03eacc2bdb0cac9ba2c1",
+      "sizeBytes": 120457,
+      "previews": [
+        "previews/cherrymx-brown-pbt.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "kalih-box-white",
+      "type": "sound_pack",
+      "name": "Kalih Box White",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "Kailh Box White clickies: a click bar rather than a jacket, so the tick is higher, tighter and repeats identically on release. Ten recordings. (Upstream spells it \"Kalih\"; kept as published.)",
+      "tags": [
+        "switch",
+        "kailh",
+        "clicky",
+        "box"
+      ],
+      "path": "packs/kalih-box-white.wmsoundpack",
+      "sha256": "00a2320bb91be65940915c3d70543bdd89885d227665edfea009dcf7ab65834f",
+      "sizeBytes": 168681,
+      "previews": [
+        "previews/kalih-box-white.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "razer-green",
+      "type": "sound_pack",
+      "name": "Razer Green",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "Razer Greens: a loud, bright, deliberately gamer-facing click with more high end than the Cherry Blues. Ten recordings.",
+      "tags": [
+        "switch",
+        "razer",
+        "clicky",
+        "gaming"
+      ],
+      "path": "packs/razer-green.wmsoundpack",
+      "sha256": "3fbff279b6bf5f066bd07df67c0e16e008898aa6044ac4f73d2dbbcb604ba8bd",
+      "sizeBytes": 167627,
+      "previews": [
+        "previews/razer-green.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "tealios-v2",
+      "type": "sound_pack",
+      "name": "Tealios V2",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "Tealios V2 linears: the smooth, glassy, slightly high-pitched sound that made them the enthusiast default. Ten recordings.",
+      "tags": [
+        "switch",
+        "tealios",
+        "linear",
+        "premium"
+      ],
+      "path": "packs/tealios-v2.wmsoundpack",
+      "sha256": "a813accb68095ac075156d3ee07e6a2381048af802053272e32c8020f6d036d6",
+      "sizeBytes": 118790,
+      "previews": [
+        "previews/tealios-v2.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "trust-gxt",
+      "type": "sound_pack",
+      "name": "Trust GXT",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "A Trust GXT budget mechanical board — rattly, hollow and cheerfully unrefined. Ten recordings.",
+      "tags": [
+        "board",
+        "budget",
+        "clicky"
+      ],
+      "path": "packs/trust-gxt.wmsoundpack",
+      "sha256": "61c4dc6f8e647bcd46d12f30b30f4575468870754859073370e41ddde8be2664",
+      "sizeBytes": 208754,
+      "previews": [
+        "previews/trust-gxt.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "error-damage",
+      "type": "sound_pack",
+      "name": "Error: Damage",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "Monkeytype's \"damage\" mistype sound: a short, dull hit. Meant for a wrong keystroke, so it is unforgiving as a key sound — which is the point if you want one.",
+      "tags": [
+        "error",
+        "damage",
+        "alert"
+      ],
+      "path": "packs/error-damage.wmsoundpack",
+      "sha256": "bd0df2d46a5bc80c8350b46a4edc9cf782a58f465f8aa0693b836ef2be99d000",
+      "sizeBytes": 5284,
+      "previews": [
+        "previews/error-damage.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "error-triangle",
+      "type": "sound_pack",
+      "name": "Error: Triangle",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "A falling triangle-wave tone. Pitched rather than percussive, so it reads as a buzzer more than an impact.",
+      "tags": [
+        "error",
+        "tone",
+        "alert"
+      ],
+      "path": "packs/error-triangle.wmsoundpack",
+      "sha256": "9966e51405bc1fe394cbd212dcd109522f4cd5a5dcebe8586d9750e7b6fdfa44",
+      "sizeBytes": 13419,
+      "previews": [
+        "previews/error-triangle.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "error-square",
+      "type": "sound_pack",
+      "name": "Error: Square",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "A falling square-wave tone: the same shape as the triangle error with the harsh 8-bit edge left on.",
+      "tags": [
+        "error",
+        "tone",
+        "8-bit",
+        "alert"
+      ],
+      "path": "packs/error-square.wmsoundpack",
+      "sha256": "e18a47f936fba56388bb2d6b5a3812a74ac0006f26201b59ec51c503a2c695c8",
+      "sizeBytes": 10040,
+      "previews": [
+        "previews/error-square.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "error-missed-punch",
+      "type": "sound_pack",
+      "name": "Error: Missed Punch",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "A punch thrown and missed — a whoosh with no impact at the end. Two recordings.",
+      "tags": [
+        "error",
+        "whoosh",
+        "novelty"
+      ],
+      "path": "packs/error-missed-punch.wmsoundpack",
+      "sha256": "ec1f27ba70bf3d5ba6cffb96bf5185425cea146fe6a9a9a0ea8eb67ff200de0b",
+      "sizeBytes": 30695,
+      "previews": [
+        "previews/error-missed-punch.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "fart-reverb",
+      "type": "sound_pack",
+      "name": "Fart Reverb",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "The single reverb-tailed one monkeytype keeps outside the click sets. Long for a key sound; try it on the spacebar role only.",
+      "tags": [
+        "novelty",
+        "joke",
+        "reverb"
+      ],
+      "path": "packs/fart-reverb.wmsoundpack",
+      "sha256": "0d191624359ff625743dd2fcf0929d9d77459eb2e38b01fbff0112bcfce72b57",
+      "sizeBytes": 79715,
+      "previews": [
+        "previews/fart-reverb.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    },
+    {
+      "id": "time-warning",
+      "type": "sound_pack",
+      "name": "Time Warning",
+      "version": "1.0.0",
+      "author": "Monkeytype contributors",
+      "description": "The chime monkeytype plays as a timed test runs out. A clean bell rather than a click — pleasant on the enter key.",
+      "tags": [
+        "alert",
+        "chime",
+        "warning"
+      ],
+      "path": "packs/time-warning.wmsoundpack",
+      "sha256": "4d9e64a4fc0d932d29ddc40c31b70792d456ce767dda719704cd35230957c036",
+      "sizeBytes": 77716,
+      "previews": [
+        "previews/time-warning.png"
+      ],
+      "minAppVersion": 4,
+      "license": "GPL-3.0-or-later",
+      "licenseFile": "LICENSE"
+    }
+  ]
+}

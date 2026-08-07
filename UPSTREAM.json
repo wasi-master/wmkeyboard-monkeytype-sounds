@@ -1,0 +1,224 @@
+{
+  "_comment": "Written by tools/import_monkeytype.py. The commit every sample in packs/ was taken from, and the git blob sha of each source file, so a rebuild can be checked against exactly what was imported.",
+  "repository": "https://github.com/monkeytypegame/monkeytype",
+  "commit": "d7eb4b76f3b3000199022ea52a52365b9346b8d0",
+  "importedAt": "2026-08-07",
+  "soundsDir": "frontend/static/sounds",
+  "synthesizedUpstream": {
+    "8": "sine",
+    "9": "sawtooth",
+    "10": "square",
+    "11": "triangle",
+    "12": "pentatonic",
+    "13": "wholetone"
+  },
+  "sources": {
+    "click": {
+      "click1/1.wav": "0aa332124fe89ab7e313267a4bd67f04baaefc5e",
+      "click1/2.wav": "3539954d1bb8a46dfa70357088fdb60db5a2b906",
+      "click1/3.wav": "be6989c54e9976894454bf5c1d2c12204b221eec"
+    },
+    "beep": {
+      "click2/1.wav": "221a25137d32fcd5a8fb77c415b5c05bce8766c4",
+      "click2/2.wav": "45d929feccd6b1d6228dd4bfa8a8d0993babd8d2",
+      "click2/3.wav": "a08a2cf071c6e1e6c511845fec9b20149f7b4de6"
+    },
+    "pop": {
+      "click3/1.wav": "d9df93e87676bbe63bc51dfa848d19b85081adaf",
+      "click3/2.wav": "7217a1be77493a622076d002166969faab224791",
+      "click3/3.wav": "e46c6b7a5963d68da256a944176cd8a902ef5ff7"
+    },
+    "nk-creams": {
+      "click4/1.wav": "b03acd4db3729cffeee28af5e505d6d502c4a263",
+      "click4/2.wav": "e8af2f633575968f46d05a7e5e1c57af46362b8a",
+      "click4/3.wav": "604449d5df77dcbc09177731a330cbaf1ffb333a",
+      "click4/4.wav": "b2939d493ef3bd1ca4f90cfdfaf289af052c3f61",
+      "click4/5.wav": "145976c7c6c3ed72c432dc007f17db02be223a83",
+      "click4/6.wav": "ec0d5379ad15702a9daab1fe32754c77f4746931"
+    },
+    "typewriter": {
+      "click5/1.wav": "5051ae1bec1f1824625fbb670fad63a994631a0d",
+      "click5/2.wav": "a34e3025c280c49ae5658da29dada1d7c047758a",
+      "click5/3.wav": "e365207f495e3ca1a2951a90f48be1d6ebc27982",
+      "click5/4.wav": "a6536ff9ee01fe7447624124676c1c148dea6383",
+      "click5/5.wav": "7182d01b7d7121a8a81edb6b50b64490ec8c61f5",
+      "click5/6.wav": "60a2b3a13906880218d26f778692575314ad5627"
+    },
+    "osu": {
+      "click6/1.wav": "aacf41a62b3dab4ea4599064c0d8e8cf89729e71",
+      "click6/2.wav": "aacf41a62b3dab4ea4599064c0d8e8cf89729e71",
+      "click6/3.wav": "aacf41a62b3dab4ea4599064c0d8e8cf89729e71"
+    },
+    "hitmarker": {
+      "click7/1.wav": "1521655b95b9012a839a87b948a6f0b0ea4c9ad2",
+      "click7/2.wav": "1521655b95b9012a839a87b948a6f0b0ea4c9ad2",
+      "click7/3.wav": "1521655b95b9012a839a87b948a6f0b0ea4c9ad2"
+    },
+    "fist-fight": {
+      "click14/1.wav": "c25c194672984251b21e7ad51af3f36d401d8efc",
+      "click14/2.wav": "3d89c5926ad43dc267d3d0c64cffd569d62357fa",
+      "click14/3.wav": "f0b2a3ac90fece82a2b8040f6144cd53033acb24",
+      "click14/4.wav": "e6fcba84c1d5470d34920f433ddac5fcc3d52739",
+      "click14/5.wav": "41c1986d30ad15f9ab7d199c3710c4c87847f6d0",
+      "click14/6.wav": "855f0400c808e9fcfc7d82f3bfa743e7d921823a",
+      "click14/7.wav": "ad420aa4bab90ee1f11632365f23c8dbbfbbafec",
+      "click14/8.wav": "e6713966200d9ca56e1d767444ae1234afa4ec61"
+    },
+    "rubber-keys": {
+      "click15/1.wav": "a6db198b1290754416d3d8ab76034b5a4ac8c5a2",
+      "click15/2.wav": "a34dd1ae06decbcd67c0e259e7a44c278eb59efd",
+      "click15/3.wav": "fe0bde489a05d9c20702313eeef0bde8332d584e",
+      "click15/4.wav": "75a09d0517ff38bc083dda5c18c7e51c3b2dc850",
+      "click15/5.wav": "dca02d0352909e657defbc6fbfad4736505abe7a"
+    },
+    "fart": {
+      "click16/1.wav": "ecac6605c78d5f18592678a20c52e4f8af0be683",
+      "click16/2.wav": "dbbafd4e370c35064297bff6936ff573827e0bb6",
+      "click16/3.wav": "06f3f6582a9d626761da7e919b55487ccfea8fa9",
+      "click16/4.wav": "9143e9b570291a6f552cd652fc7da5a0c2ca7ace",
+      "click16/5.wav": "0678eac083cd99ebb8f5dfadcef0e4330313d914",
+      "click16/6.wav": "23aed8d0ae55e6e6851d5bdfafe122c445aae0ad",
+      "click16/7.wav": "7bc0996cd505f76dbc1df259971b6dd659091950",
+      "click16/8.wav": "54de28c7a0e544111182225c3e15676b99abab0f"
+    },
+    "akko-lavenders": {
+      "click17/1.wav": "39594279aa36e6b0f3762b1425d11172e7ff7ba0",
+      "click17/2.wav": "d4e4b25b13f16bd071292e13ffc36b59ebee84ab",
+      "click17/3.wav": "bd92bf2733f0f8997fcaabd41ff29755018c2db2",
+      "click17/4.wav": "1faad3497b819569aeb13f61119f28b631245a48",
+      "click17/5.wav": "4972960da9c87a225a68d11ee8e690daa752b187",
+      "click17/6.wav": "5904c64a294a406d7ab0abff0d68933430acf4d1",
+      "click17/7.wav": "9c4c803ade8cd20b26546fc4d6a86fff01871594",
+      "click17/8.wav": "dd85e97f5e37e53f61888c338f6950a867db2bf0",
+      "click17/9.wav": "977ad59a6889e80411380933ee57c8c0b33cf806",
+      "click17/10.wav": "672cc5c1e089a5f5f8ef3e14950c9c644a0b6d01"
+    },
+    "cherrymx-black-abs": {
+      "click18/1.wav": "25644b65638c63606a4cf6784602d4dc59bf65e0",
+      "click18/2.wav": "9b1c263c008b2fca510b5c5fc3dea0a3168426eb",
+      "click18/3.wav": "1a926b50eeeb4a5b72ec79150e12661945d71d10",
+      "click18/4.wav": "77406a3335834162938eef610fc1b358afb67d35",
+      "click18/5.wav": "cc99d4f8a8ede232a108aff33d13546fbb6eed00",
+      "click18/6.wav": "a633df2b7c814c699e56b2c8cfb8adc74df78ad0",
+      "click18/7.wav": "40530520bfd9395c7d1e819116c076d8d0489355",
+      "click18/8.wav": "063ac5d01bcc67dfffaf7e9bf799bd04b4b27c06",
+      "click18/9.wav": "9d05c4f97ec8f5a2d1fc1fad491c136f46b9212d",
+      "click18/10.wav": "0175d76d230d55d6538c4543c7e97f548f0df477"
+    },
+    "cherrymx-black-pbt": {
+      "click19/1.wav": "a98c96f5f252f3f0123ca10730bdecdd0cb11f98",
+      "click19/2.wav": "1ddd7d3da6aab71a137b8983baf49602fcfb91d5",
+      "click19/3.wav": "3bc4a62e027203ff3c5e9242fde27c93a1372563",
+      "click19/4.wav": "76ead2b5b4d20972ebd97d7778fdbf9ed6ce5917",
+      "click19/5.wav": "001a1f3769d15f383c53c3cd90a8e1ae7c4bd83c",
+      "click19/6.wav": "8b0fc87db2483dcc42a5e853969aff61ad32fefe",
+      "click19/7.wav": "8410a5f9640a1920082c65da60b4d0da879390cd",
+      "click19/8.wav": "c6d12a376da8220aa7964bed94bdd65d61052b68",
+      "click19/9.wav": "aba1d376fb4de1bb657562702789f12ff4b2eb35",
+      "click19/10.wav": "3674434ac8fb9519e3936702ba5f15a8eba645cc"
+    },
+    "cherrymx-blue-abs": {
+      "click20/1.wav": "e174a683e31021e005054473afac2d9bb7f5949b",
+      "click20/2.wav": "6fa32d1d69547abe6821b0b759128daad7bef652",
+      "click20/3.wav": "8c580bdd0fdaebd7e80ef92e0ac6e84ec1909314",
+      "click20/4.wav": "ef1de152bf7953ff812048853f0e47fa28851dc0",
+      "click20/5.wav": "affdd2b9a9bba739c0fde78f482bfcf16a258ea6",
+      "click20/6.wav": "77bc5995eff75bc66f6041e170eaf84963761c99",
+      "click20/7.wav": "6605091ed1d51681e19151e039f4a0421353171b",
+      "click20/8.wav": "f415079d34f5679944acd0347bd76217f8cb9b33",
+      "click20/9.wav": "db04f900334d34abe96118b517fc4a9dffa0b764",
+      "click20/10.wav": "d9c390c853b6a1d4a435b90e560fc8e22045967c"
+    },
+    "cherrymx-blue-pbt": {
+      "click21/1.wav": "cb2628bebc2372afb6ae6ebbeede0b7c6b0d054f",
+      "click21/2.wav": "bfb18e90a880ecccc893faa820d92eb5126e3e1d",
+      "click21/3.wav": "c6d74f44c0cbfb07af5c5a90ae9d513aaac12b18",
+      "click21/4.wav": "54cd89a74d7041afdf5fca02fa2dc601aef46ccb",
+      "click21/5.wav": "c5d00e05d5c8866bd5ea3bd06c0339ff0f7fa324",
+      "click21/6.wav": "fa9a90746d31ab58e4ee9137190242a833e90db2",
+      "click21/7.wav": "be44574db2a4ca59888ac94d6a1c169cbdb33457",
+      "click21/8.wav": "c4e5c3ebb246f1e0272dd9c26e0326c01b0f7e12",
+      "click21/9.wav": "9c0a978074b4da38453d51592fdcc23cf5a81c61",
+      "click21/10.wav": "d8ac7b120567eadafe57b6c8094fec1d76afde51"
+    },
+    "cherrymx-brown-pbt": {
+      "click22/1.wav": "dcf5c8e78ad97ee1d9bf094c68ced67f3035d7a1",
+      "click22/2.wav": "4bfcf49f76b264a764043313399f263b5f9699cd",
+      "click22/3.wav": "386044a290246426c5095274d3b9b7c1b4e8bf4f",
+      "click22/4.wav": "063a08a6c6608984d890b24403ccb17959e6c492",
+      "click22/5.wav": "e7926047813c5675bf25effe889343b510f455e0",
+      "click22/6.wav": "bbfa6766e2ed9b42c93d15c5d069b58813ea7d45",
+      "click22/7.wav": "4430ecc0845adb0c981611f98550f54e6c4a1aca",
+      "click22/8.wav": "ce4319c54a4203067fc5139f83281deb3c43debc",
+      "click22/9.wav": "36fa84dbd5d8ad443a3891941a53c2712c2e7977",
+      "click22/10.wav": "00cd42ec0d0f2b2583325e6ab5cd74f5caaef657"
+    },
+    "kalih-box-white": {
+      "click23/1.wav": "5f921b4641c607f6ece1b8be04dd88eb394ba14f",
+      "click23/2.wav": "31ad298c9346e27d3d83814e17e1e057dd1f9d24",
+      "click23/3.wav": "b57dfee0a2134480106cde46f660a53aa3ca12ae",
+      "click23/4.wav": "a131143f7df69d080ed41b523d0fb3be5d320350",
+      "click23/5.wav": "890f92069cd1fd4bd11cbc067f68fdb5bc00a977",
+      "click23/6.wav": "cabb917d38c94b2f7930760806747dcd46603f1d",
+      "click23/7.wav": "c1761145fa270e8019a792ccc0b1a465cb444dd5",
+      "click23/8.wav": "b90e235ffd08158c8753cf252e29f33e34af1194",
+      "click23/9.wav": "4ac2f9752f668a421ff8f7a8f1338430c6f16c13",
+      "click23/10.wav": "c1a8bdd2270fbfbe31a634df2e90ed30662b93db"
+    },
+    "razer-green": {
+      "click24/1.wav": "04e2eda500ae8148764c8d4085c73edec2bcfd77",
+      "click24/2.wav": "069c9dfd2a17d662e64e1dd0caf101674bae2bee",
+      "click24/3.wav": "49dc21b858b4361bdf67c11eccf0caa233b013ab",
+      "click24/4.wav": "5dd47d561b6541f8a7acc532ac96ea96f4e1e3ef",
+      "click24/5.wav": "40b8a855477eb0c86942b730e296b30481daf064",
+      "click24/6.wav": "f4dc26624dfc3656f32bfc0fbc83aaad960c64ba",
+      "click24/7.wav": "ea10c1eac7a7993ac94a3f478855351928bd2949",
+      "click24/8.wav": "500d6a84b34e65cb52c4e69e874a86c6f9be2868",
+      "click24/9.wav": "58899e58c0444b7b5c4daec881d118b8a2a6d882",
+      "click24/10.wav": "eba8292583d5de8a1b4f94254adba6b59f55a603"
+    },
+    "tealios-v2": {
+      "click25/1.wav": "f16f5f7cbfdc6119c510cd03e1e0712419198a82",
+      "click25/2.wav": "cd9a53442958c41494068bbc3478a6973410a85a",
+      "click25/3.wav": "2b3fc35ce7993f29460c9bcd3663a10a37f4b4c9",
+      "click25/4.wav": "8c245092c73e4816544c90c20151325a0cd9a6e9",
+      "click25/5.wav": "ef6a63409c5a32897d61ae2ac5398abb8d7153e7",
+      "click25/6.wav": "af282aede25977dcebeecf48ad78af8c8c76af95",
+      "click25/7.wav": "6effb8c222d90d46acccaf6a0a7b44a8674b4609",
+      "click25/8.wav": "fbd5a0b26c1841cda3f8dfa832a38c4544764fca",
+      "click25/9.wav": "f2001eee108295d2b3858fa3814cb0833ae8a77d",
+      "click25/10.wav": "948cd9602f5bfa8f01eb6f3516ce7c2a2fedfd2d"
+    },
+    "trust-gxt": {
+      "click26/1.wav": "f02c06f78753662f91d0341a3e14ac88e82b2df1",
+      "click26/2.wav": "2fe82a24ae22421b0ec3bf4aef720bf2e9546f0c",
+      "click26/3.wav": "acff23839292d8d46558fcd0ad7855406168a00f",
+      "click26/4.wav": "ae41c9918b5d65ad58a09cafb7cc09d6c9a235d1",
+      "click26/5.wav": "3f8fb4dfad46c4777130487ceb766c4f93276097",
+      "click26/6.wav": "4246c58b8d33b8e5f35ed10ade15e96d39ab5eba",
+      "click26/7.wav": "9b4540293784669907b78ce73721fca7a970ee20",
+      "click26/8.wav": "2b38fb102f3c20f3007e0cd8a196be8b4257d97d",
+      "click26/9.wav": "b54fac199dea796a753c8b4461de239f9a739941",
+      "click26/10.wav": "47303ed921f6175d997c9fde075e88e292df633b"
+    },
+    "error-damage": {
+      "error1/1.wav": "3479db58a1ad191e2129cb9f8444330d79a38dde"
+    },
+    "error-triangle": {
+      "error2/1.wav": "2414d2bd6cd843703fbe01684576bbf8f5d4e718"
+    },
+    "error-square": {
+      "error3/1.wav": "00f11691be44e2ebe844ab6099152735d49e4401"
+    },
+    "error-missed-punch": {
+      "error4/1.wav": "fa554501e3264876d9013c76f77c43ee27c0d9e9",
+      "error4/2.wav": "d9025157da81040ee8081aeaca32bfaa5f67d963"
+    },
+    "fart-reverb": {
+      "fart-reverb.wav": "4727dc6acd0c15d5df8e784114c0f669ac1a3a06"
+    },
+    "time-warning": {
+      "timeWarning.wav": "b5b8df5235e868f671823d2dd07b012c70fd1a6f"
+    }
+  }
+}

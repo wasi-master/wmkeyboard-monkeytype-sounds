@@ -1,0 +1,49 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install jsonschema numpy pillow
+
+      # The schema, every checksum, and — the pass worth having — every pack
+      # opened and checked against the limits the app itself enforces. A
+      # manifest can be perfectly valid while the packs in it are unplayable.
+      - name: Validate the manifest and every pack
+        run: python3 tools/validate.py
+
+      # README.md is generated. Editing it by hand is work the next run of the
+      # generator throws away, so CI says so rather than letting it drift.
+      - name: Check README.md is current
+        run: python3 tools/gen_readme.py --check
+
+      # Previews are generated too, and a pack whose waveform card is missing
+      # ships an addon page with an empty image slot.
+      - name: Check every pack has a preview
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, sys
+          manifest = json.loads(pathlib.Path("wmkeyboard-repo.json").read_text())
+          missing = [
+              preview
+              for entry in manifest["addons"]
+              for preview in entry.get("previews", [])
+              if not pathlib.Path(preview).is_file()
+          ]
+          if missing:
+              print("missing previews:", *missing, sep="\n  ")
+              sys.exit(1)
+          print(f"{len(manifest['addons'])} addons, every preview present")
+          PY
