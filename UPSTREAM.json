@@ -2,7 +2,7 @@
   "_comment": "Written by tools/import_monkeytype.py. The commit every sample in packs/ was taken from, and the git blob sha of each source file, so a rebuild can be checked against exactly what was imported.",
   "repository": "https://github.com/monkeytypegame/monkeytype",
   "commit": "d7eb4b76f3b3000199022ea52a52365b9346b8d0",
-  "importedAt": "2026-08-07",
+  "importedAt": "2026-08-09",
   "soundsDir": "frontend/static/sounds",
   "synthesizedUpstream": {
     "8": "sine",

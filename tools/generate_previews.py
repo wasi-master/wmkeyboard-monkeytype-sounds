@@ -138,11 +138,29 @@ def envelope(samples: np.ndarray, columns: int) -> tuple[np.ndarray, np.ndarray]
     return lows, highs
 
 
-def read_pack(path: Path) -> tuple[dict, list[tuple[np.ndarray, int]]]:
+# Silence drawn between a variant's key-down and key-up halves. Not the real
+# gap — the recordings were cut apart, and how long a finger rests on a key is
+# the typist's business — just enough that the two read as two events.
+JOIN_GAP_MS = 24.0
+
+
+def read_pack(path: Path) -> tuple[dict, list[tuple[np.ndarray, np.ndarray | None, int]]]:
+    """The manifest and one (key-down, key-up, rate) lane per variant.
+
+    Paired by index, which is how the importer cut them: `press[3]` and
+    `release[3]` are the two halves of one recording. The app does not pair them
+    — it draws from each list on its own — but a picture that showed one half
+    beside an unrelated other half would be a picture of nothing.
+    """
     with zipfile.ZipFile(path) as archive:
         manifest = json.loads(archive.read("pack.json"))
-        variants = [read_wav(archive.read(name)) for name in manifest["press"]]
-    return manifest, variants
+        releases = manifest.get("release") or []
+        lanes = []
+        for index, name in enumerate(manifest["press"]):
+            samples, rate = read_wav(archive.read(name))
+            up = read_wav(archive.read(releases[index]))[0] if index < len(releases) else None
+            lanes.append((samples, up, rate))
+    return manifest, lanes
 
 
 def draw_traces(
@@ -161,26 +179,36 @@ def draw_traces(
     Amplitude is drawn on a compressed scale (``|x| ** 0.45``), the same thing
     an audio editor's logarithmic waveform view does, unless [linear] is set.
     On a linear scale these recordings are one spike and 150 ms of apparently
-    flat line — which hides something real: most of the switch packs have the
-    key's *release* click recorded into the same file, 70–100 ms behind the
-    press and a fraction of its amplitude. That is a property of the pack worth
-    seeing on its card.
+    flat line — which hides the thing the card most wants to show: on the switch
+    packs, the second, quieter event is the key coming *back up*, and the whole
+    reason those packs are cut into a key-down and a key-up half.
+
+    Where a pack has that half, the lane draws both, separated by a gap and a
+    divider, so the picture reads as one keystroke rather than as two packs.
     """
     left, top, right, bottom = box
     shown = variants[:MAX_TRACES]
     lane = (bottom - top) / max(len(shown), 1)
     columns = int((right - left) / (2 * SCALE))
-    peak = max((float(np.max(np.abs(s))) for s, _ in shown), default=1.0) or 1.0
+    peak = max((float(np.max(np.abs(s))) for s, _, _ in shown), default=1.0) or 1.0
     gamma = 1.0 if linear else 0.45
 
     layer = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
     draw = ImageDraw.Draw(layer)
     label_font = font("jetbrains-mono.ttf", 9)
 
-    for index, (samples, rate) in enumerate(shown):
+    for index, (samples, up, rate) in enumerate(shown):
         centre = top + lane * (index + 0.5)
         half = lane * 0.40
-        lows, highs = envelope(samples, columns)
+        # The two halves are laid end to end on one time axis, so the key-up
+        # keeps its real length and level relative to the key-down beside it.
+        if up is not None:
+            gap = np.zeros(int(rate * JOIN_GAP_MS / 1000.0))
+            joined = np.concatenate([samples, gap, up])
+            split_at = (samples.size + gap.size / 2) / joined.size
+        else:
+            joined, split_at = samples, None
+        lows, highs = envelope(joined, columns)
 
         # Baseline first, so a near-silent trace is still visibly a trace.
         draw.line([(left, centre), (right, centre)], fill=FAINT[:3] + (90,), width=SCALE)
@@ -195,16 +223,31 @@ def draw_traces(
                 y_low, y_high = centre - SCALE / 2, centre + SCALE / 2
             draw.line([(x, y_low), (x, y_high)], fill=accent + (235,), width=SCALE)
 
+        if split_at is not None:
+            x = left + split_at * (right - left)
+            draw.line(
+                [(x, centre - half), (x, centre + half)],
+                fill=FAINT[:3] + (150,),
+                width=SCALE,
+            )
+
         draw.text(
             (left - 26 * SCALE, centre - 6 * SCALE),
             f"{index + 1:>2}",
             font=label_font,
             fill=FAINT,
         )
-        ms = samples.size / rate * 1000.0
+        down_ms = samples.size / rate * 1000.0
+        # "137+70ms", not "137ms + 70ms": there is one line's width of room to
+        # the right of the card and the spaced form runs off the edge of it.
+        label = (
+            f"{down_ms:.0f}ms"
+            if up is None
+            else f"{down_ms:.0f}+{up.size / rate * 1000.0:.0f}ms"
+        )
         draw.text(
             (right + 8 * SCALE, centre - 6 * SCALE),
-            f"{ms:.0f}ms",
+            label,
             font=label_font,
             fill=FAINT,
         )
@@ -234,9 +277,10 @@ def render(meta: dict, path: Path, out: Path, linear: bool = False) -> None:
         outline=accent + (90,),
         width=2 * SCALE,
     )
+    key_up = "  •  KEY-UP TOO" if manifest.get("release") else ""
     badge = pill(
         f"{family['badge']}  •  {len(manifest['press'])} RECORDING"
-        f"{'S' if len(manifest['press']) != 1 else ''}",
+        f"{'S' if len(manifest['press']) != 1 else ''}{key_up}",
         mono_font,
         fg=accent + (255,),
         bg=accent + (34,),
@@ -276,11 +320,12 @@ def render(meta: dict, path: Path, out: Path, linear: bool = False) -> None:
             fill=FAINT,
         )
 
-    footer = (
-        "One picked at random for every key press"
-        if len(variants) > 1
-        else "A single recording"
-    )
+    if manifest.get("release"):
+        footer = "One picked at random per key press, and one more when you lift"
+    elif len(variants) > 1:
+        footer = "One picked at random for every key press"
+    else:
+        footer = "A single recording"
     draw.text(
         (margin, HEIGHT - 72 * SCALE),
         f"{footer}  •  WM Keyboard sound pack",

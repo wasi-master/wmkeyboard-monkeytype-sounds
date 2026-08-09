@@ -32,7 +32,8 @@ PROLOGUE = """\
 
 [Monkeytype](https://monkeytype.com)'s key sounds, packaged as WM Keyboard
 **sound packs** — every recording of each set, one picked at random for each key
-press, the way monkeytype plays them.
+press, the way monkeytype plays them, and on the switch packs a second one when
+you lift your finger, the way the keyboards they were recorded from do.
 
 Add this repository in **WM Keyboard → Add-ons → Add repository**:
 
@@ -55,7 +56,7 @@ exactly this: many recordings in one file, one chosen per key press, with
 optional separate recordings per key role. The format is written up in
 [docs/SOUND_PACK_FORMAT.md](docs/SOUND_PACK_FORMAT.md).
 
-Two differences from monkeytype worth knowing:
+Three differences from monkeytype worth knowing:
 
 - **No variant repeats twice in a row.** Monkeytype draws uniformly from the
   whole list, so on a three-recording set about one keystroke in three repeats
@@ -65,6 +66,42 @@ Two differences from monkeytype worth knowing:
   peaked at -1 dBFS and every other recording in that set is moved by the *same*
   gain. Normalising each one on its own would have made ten switch recordings
   ten identical volumes and made the randomisation inaudible.
+- **The switch packs sound on the way up too.** See below.
+
+## Key-down and key-up
+
+A mechanical keyboard makes two noises per key: the switch actuating, and the
+stem returning when your finger lifts. Monkeytype's switch recordings hold
+both — the return is right there in the same file, 100-200 ms behind the press —
+but monkeytype plays one file per key press, so its key-up tick fires on a timer
+regardless of when you actually let go. Hold a key and the sound finishes
+without you.
+
+WM Keyboard's pack format has a `release` list that plays when the key comes
+back up, so the twelve sets whose recordings hold a return are **cut in two** at
+import: the press half into `press`, the return into `release`. Hold a key on
+those packs and the second click waits for you.
+
+The cut is found rather than assumed. The importer walks each recording forward
+from its loudest point, keeping the quietest level it has seen since, and looks
+for a later peak that rises 3x out of it — a decaying tail never does that to
+itself, so the test means "a second event happened" rather than "it got louder".
+The cut lands just before the quietest point between the two.
+
+Which sets get cut is a **human decision** in `tools/catalogue.py`, not the
+detector's, because the detector cannot tell a key coming back up from the
+second half of a punch. *Fist Fight* trips it on 8 recordings out of 8 and is
+marked `WHOLE` for exactly that reason; *Rubber Keys* trips it on 2 of 5, which
+is a dome settling inside its own decay rather than a separate event.
+
+Within a set that is cut, a recording with no return in it is **dropped** rather
+than kept whole. The app draws from the two lists independently, so a whole
+recording left among the press halves would play its own baked-in return *and*
+a release sample when you lift — a double tick on some keystrokes and not
+others. That costs *Tealios V2* and *Trust GXT* three recordings each.
+
+The preview cards show the result: the divider in each trace is where the
+recording was cut.
 
 ## Key roles
 
@@ -80,11 +117,10 @@ board, where the spacebar genuinely is a different noise because of the
 stabilisers under it. See
 [docs/SOUND_PACK_FORMAT.md](docs/SOUND_PACK_FORMAT.md#roles).
 
-One accident of the source material is worth knowing about if you do record your
-own: most of the switch sets have the key's **release** click recorded into the
-same file, 70–100 ms behind the press. Monkeytype plays the whole file on
-key-down, so the release tick fires on a timer rather than when you lift your
-finger. The preview cards show it — it is the second burst in each trace.
+Roles and the key-down/key-up split are independent, and a role that fills only
+`press` still falls back to the pack's top-level `release`. So a spacebar you
+record separately keeps the board's key-up sound for free until you record that
+too.
 """
 
 EPILOGUE = """\
@@ -102,16 +138,20 @@ python3 tools/validate.py               # schema, checksums, and every pack
 - **`tools/import_monkeytype.py`** pins a monkeytype commit and does the rest
   from it: reads the display names out of `metadata.tsx`, the variant counts out
   of `sounds.ts`, lists the sounds directory from the git tree, downloads each
-  `.wav`, trims and levels each set, and writes deterministic archives. Re-running
-  with no upstream change produces identical files with identical checksums.
-  `--ref master` moves the pin; `--bump` bumps the patch version of any pack
-  whose bytes changed.
-- **`tools/catalogue.py`** is the hand-written half — published id, family, tags
-  and description per set. The importer **stops** if upstream ships a sound the
-  catalogue does not describe, rather than publishing it as "Click 27".
+  `.wav`, trims and levels each set, cuts the key-up half out of the sets that
+  have one, and writes deterministic archives. Re-running with no upstream
+  change produces identical files with identical checksums. `--ref master` moves
+  the pin; `--bump` bumps the patch version of any pack whose bytes changed;
+  `--raw` skips levelling and the cut both.
+- **`tools/catalogue.py`** is the hand-written half — published id, family, tags,
+  description and key-up policy per set. The importer **stops** if upstream
+  ships a sound the catalogue does not describe, rather than publishing it as
+  "Click 27", and stops again if a set has no `release` policy rather than
+  guessing one.
 - **`tools/generate_previews.py`** draws the actual waveform of every recording
-  in a pack, stacked, on a shared scale. Amplitude is compressed the way an
-  audio editor's logarithmic view does it; `--linear` turns that off.
+  in a pack, stacked, on a shared scale, key-down and key-up end to end with a
+  divider between them. Amplitude is compressed the way an audio editor's
+  logarithmic view does it; `--linear` turns that off.
 - **`tools/validate.py`** checks the manifest against the schema, checks every
   checksum, and opens every pack to check it against the limits the app enforces
   — so a pack that would fail on someone's phone fails in CI instead.
@@ -153,9 +193,10 @@ def build() -> str:
         count = len(pack["press"])
         total_recordings += count
         family = FAMILIES[meta["family"]]["label"] if meta else ""
+        key_up = "yes" if pack.get("release") else "—"
         rows.append(
             f"| [{entry['name']}](previews/{addon_id}.png) | {family} | "
-            f"{count} | {size_of(entry)} | `{addon_id}` |",
+            f"{count} | {key_up} | {size_of(entry)} | `{addon_id}` |",
         )
 
     parts = [
@@ -165,8 +206,8 @@ def build() -> str:
         "",
         f"{total_recordings} recordings in total. Click a name for its waveform card.",
         "",
-        "| Pack | Family | Recordings | Size | Id |",
-        "| --- | --- | --: | --: | --- |",
+        "| Pack | Family | Recordings | Key-up | Size | Id |",
+        "| --- | --- | --: | :-: | --: | --- |",
         *rows,
         "",
         "### Not here",

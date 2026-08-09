@@ -9,7 +9,7 @@
     "author": "Wasi Master",
     "homepage": "https://github.com/wasi-master/wmkeyboard-monkeytype-sounds",
     "icon": "previews/icon.png",
-    "updatedAt": "2026-08-07"
+    "updatedAt": "2026-08-09"
   },
   "addons": [
     {
@@ -84,7 +84,7 @@
       "name": "NK Creams",
       "version": "1.0.0",
       "author": "Monkeytype contributors",
-      "description": "Novelkeys Cream linears: the deep, hollow POM sound those switches are bought for. Six recordings, so the same key never sounds identical twice.",
+      "description": "Novelkeys Cream linears: the deep, hollow POM sound those switches are bought for. Six recordings, so the same key never sounds identical twice, each with its own key-up thock.",
       "tags": [
         "switch",
         "creams",
@@ -92,8 +92,8 @@
         "deep"
       ],
       "path": "packs/nk-creams.wmsoundpack",
-      "sha256": "79c0ccca5c5c7c98d89e633f1a1d3e4666246e80516b044c84f965133c4ee66b",
-      "sizeBytes": 60811,
+      "sha256": "a108cf07a0badd6e348cb81851f5f7a263a303ad3c484d6853b6bfbb1d53eba1",
+      "sizeBytes": 62154,
       "previews": [
         "previews/nk-creams.png"
       ],
@@ -107,15 +107,15 @@
       "name": "Typewriter",
       "version": "1.0.0",
       "author": "Monkeytype contributors",
-      "description": "A real typebar striking the platen, with the carriage rattle left in. Six recordings — the variation is most of the effect.",
+      "description": "A real typebar striking the platen, with the carriage rattle left in. Six recordings — the variation is most of the effect — and the typebar falling back is its own sound on key-up.",
       "tags": [
         "typewriter",
         "vintage",
         "mechanical"
       ],
       "path": "packs/typewriter.wmsoundpack",
-      "sha256": "5edc22945a008baa78b3edf831a95dba6c5682110fa59b2602a853a63399f6ad",
-      "sizeBytes": 112451,
+      "sha256": "d4be179fc0739bc1f66d2644d5dd084253d0fb7ca15ecf9b4e3e7da82b4fa96c",
+      "sizeBytes": 113054,
       "previews": [
         "previews/typewriter.png"
       ],
@@ -240,7 +240,7 @@
       "name": "Akko Lavenders",
       "version": "1.0.0",
       "author": "Monkeytype contributors",
-      "description": "Akko Lavender linears: smooth, mid-pitched and even, with none of the tick a tactile leaves behind. Ten recordings.",
+      "description": "Akko Lavender linears: smooth, mid-pitched and even, with none of the tick a tactile leaves behind. Ten recordings, and a key-up for every one of them.",
       "tags": [
         "switch",
         "akko",
@@ -248,8 +248,8 @@
         "smooth"
       ],
       "path": "packs/akko-lavenders.wmsoundpack",
-      "sha256": "82e2125855f806ec76126411ccd0d75ebd878a8d29a055ebaf5040a1bfb8d990",
-      "sizeBytes": 96492,
+      "sha256": "e6c65cb6c1b48d4085a5147d01e23c4de643a9c406c18ee9745be011cdf47ca9",
+      "sizeBytes": 99948,
       "previews": [
         "previews/akko-lavenders.png"
       ],
@@ -263,7 +263,7 @@
       "name": "CherryMX Black ABS",
       "version": "1.0.0",
       "author": "Monkeytype contributors",
-      "description": "Cherry MX Black linears under ABS keycaps — heavier and blunter than the PBT cut, with more plastic ring on top. Ten recordings.",
+      "description": "Cherry MX Black linears under ABS keycaps — heavier and blunter than the PBT cut, with more plastic ring on top. Nine recordings, each with the stem returning as a separate key-up sound.",
       "tags": [
         "switch",
         "cherry",
@@ -271,8 +271,8 @@
         "abs"
       ],
       "path": "packs/cherrymx-black-abs.wmsoundpack",
-      "sha256": "43d863c07cdc2a9f0095ca1f0bc4fc9c2ec4caa3096ccaefe96a45c921e4845e",
-      "sizeBytes": 136555,
+      "sha256": "402060339cd142ce09b31f5fafe625351b184a6670cf20e0eb58f25f4cd6598f",
+      "sizeBytes": 122508,
       "previews": [
         "previews/cherrymx-black-abs.png"
       ],
@@ -286,7 +286,7 @@
       "name": "CherryMX Black PBT",
       "version": "1.0.0",
       "author": "Monkeytype contributors",
-      "description": "Cherry MX Black linears under PBT keycaps: the same switch as the ABS set, drier and a touch lower. Ten recordings.",
+      "description": "Cherry MX Black linears under PBT keycaps: the same switch as the ABS set, drier and a touch lower. Ten recordings, each split into the press and the return.",
       "tags": [
         "switch",
         "cherry",
@@ -294,8 +294,8 @@
         "pbt"
       ],
       "path": "packs/cherrymx-black-pbt.wmsoundpack",
-      "sha256": "3ae77d9733caa2cdae3b8ea3441f972d9e1d1a545c013455e99ed62f73ac9e07",
-      "sizeBytes": 92992,
+      "sha256": "7749951773343878d3d5ac5ea2cc2c0920d2123de617c3bc8adaabf7fb6e3113",
+      "sizeBytes": 95098,
       "previews": [
         "previews/cherrymx-black-pbt.png"
       ],
@@ -309,7 +309,7 @@
       "name": "CherryMX Blue ABS",
       "version": "1.0.0",
       "author": "Monkeytype contributors",
-      "description": "Cherry MX Blue clickies under ABS keycaps — the click jacket's sharp double tick, the sound most people picture when they hear \"mechanical keyboard\". Ten recordings.",
+      "description": "Cherry MX Blue clickies under ABS keycaps — the click jacket's sharp double tick, the sound most people picture when they hear \"mechanical keyboard\". Ten recordings, and the second tick lands when you lift, not on a timer.",
       "tags": [
         "switch",
         "cherry",
@@ -317,8 +317,8 @@
         "abs"
       ],
       "path": "packs/cherrymx-blue-abs.wmsoundpack",
-      "sha256": "f66fe008501a8f5e4981c206a7d5e67b21e1d243652e0856a2320682e72907fa",
-      "sizeBytes": 136289,
+      "sha256": "8fea6064260da3a66779e6bf36cf86ceab4cd3764e1733ca5e27138c610cae47",
+      "sizeBytes": 138042,
       "previews": [
         "previews/cherrymx-blue-abs.png"
       ],
@@ -332,7 +332,7 @@
       "name": "CherryMX Blue PBT",
       "version": "1.0.0",
       "author": "Monkeytype contributors",
-      "description": "Cherry MX Blue clickies under PBT keycaps: the same click with a denser, less hollow tail. Ten recordings.",
+      "description": "Cherry MX Blue clickies under PBT keycaps: the same click with a denser, less hollow tail. Nine recordings, and the click bar ticks again on the way up.",
       "tags": [
         "switch",
         "cherry",
@@ -340,8 +340,8 @@
         "pbt"
       ],
       "path": "packs/cherrymx-blue-pbt.wmsoundpack",
-      "sha256": "0cef3968b40a82a30714e0bcd76e5b19086c868067dcdf8c39d65ed7cb65cea3",
-      "sizeBytes": 139262,
+      "sha256": "4140d014ece5082752923e35e73c9320b7252a627c910104d2d65bf6f3b29cbf",
+      "sizeBytes": 128869,
       "previews": [
         "previews/cherrymx-blue-pbt.png"
       ],
@@ -355,7 +355,7 @@
       "name": "CherryMX Brown PBT",
       "version": "1.0.0",
       "author": "Monkeytype contributors",
-      "description": "Cherry MX Brown tactiles under PBT keycaps — a small bump and a quiet, restrained sound. The office-safe Cherry. Ten recordings.",
+      "description": "Cherry MX Brown tactiles under PBT keycaps — a small bump and a quiet, restrained sound. The office-safe Cherry. Nine recordings, with a soft key-up to match.",
       "tags": [
         "switch",
         "cherry",
@@ -363,8 +363,8 @@
         "pbt"
       ],
       "path": "packs/cherrymx-brown-pbt.wmsoundpack",
-      "sha256": "f578ed0131ade77d9a6aacc86c138c04f62f2613b69f03eacc2bdb0cac9ba2c1",
-      "sizeBytes": 120457,
+      "sha256": "21aa921879c3fe79dd979212fe82e3cf98b52207683868483091bb5728f2e877",
+      "sizeBytes": 107795,
       "previews": [
         "previews/cherrymx-brown-pbt.png"
       ],
@@ -378,7 +378,7 @@
       "name": "Kalih Box White",
       "version": "1.0.0",
       "author": "Monkeytype contributors",
-      "description": "Kailh Box White clickies: a click bar rather than a jacket, so the tick is higher, tighter and repeats identically on release. Ten recordings. (Upstream spells it \"Kalih\"; kept as published.)",
+      "description": "Kailh Box White clickies: a click bar rather than a jacket, so the tick is higher, tighter and repeats identically on release — which here really is on release. Ten recordings. (Upstream spells it \"Kalih\"; kept as published.)",
       "tags": [
         "switch",
         "kailh",
@@ -386,8 +386,8 @@
         "box"
       ],
       "path": "packs/kalih-box-white.wmsoundpack",
-      "sha256": "00a2320bb91be65940915c3d70543bdd89885d227665edfea009dcf7ab65834f",
-      "sizeBytes": 168681,
+      "sha256": "cf4e6576801c19caf04c967d1105f2295718efdcbe3b219b9f99bcf11c65d9b3",
+      "sizeBytes": 169623,
       "previews": [
         "previews/kalih-box-white.png"
       ],
@@ -401,7 +401,7 @@
       "name": "Razer Green",
       "version": "1.0.0",
       "author": "Monkeytype contributors",
-      "description": "Razer Greens: a loud, bright, deliberately gamer-facing click with more high end than the Cherry Blues. Ten recordings.",
+      "description": "Razer Greens: a loud, bright, deliberately gamer-facing click with more high end than the Cherry Blues. Nine recordings, and the loudest key-up in the catalogue.",
       "tags": [
         "switch",
         "razer",
@@ -409,8 +409,8 @@
         "gaming"
       ],
       "path": "packs/razer-green.wmsoundpack",
-      "sha256": "3fbff279b6bf5f066bd07df67c0e16e008898aa6044ac4f73d2dbbcb604ba8bd",
-      "sizeBytes": 167627,
+      "sha256": "316b7cf177009c6a77d65e11e995b11cff0d781406d7da5ccbd63513072caf85",
+      "sizeBytes": 150817,
       "previews": [
         "previews/razer-green.png"
       ],
@@ -424,7 +424,7 @@
       "name": "Tealios V2",
       "version": "1.0.0",
       "author": "Monkeytype contributors",
-      "description": "Tealios V2 linears: the smooth, glassy, slightly high-pitched sound that made them the enthusiast default. Ten recordings.",
+      "description": "Tealios V2 linears: the smooth, glassy, slightly high-pitched sound that made them the enthusiast default. Seven recordings, each cut into the press and the stem coming back up.",
       "tags": [
         "switch",
         "tealios",
@@ -432,8 +432,8 @@
         "premium"
       ],
       "path": "packs/tealios-v2.wmsoundpack",
-      "sha256": "a813accb68095ac075156d3ee07e6a2381048af802053272e32c8020f6d036d6",
-      "sizeBytes": 118790,
+      "sha256": "37fc432ae5e63d051fc4f1533788fe4b0b6384a07ae1783bf38bdbb98998b892",
+      "sizeBytes": 89413,
       "previews": [
         "previews/tealios-v2.png"
       ],
@@ -447,15 +447,15 @@
       "name": "Trust GXT",
       "version": "1.0.0",
       "author": "Monkeytype contributors",
-      "description": "A Trust GXT budget mechanical board — rattly, hollow and cheerfully unrefined. Ten recordings.",
+      "description": "A Trust GXT budget mechanical board — rattly, hollow and cheerfully unrefined. Seven recordings, and it rattles on the way up as much as on the way down.",
       "tags": [
         "board",
         "budget",
         "clicky"
       ],
       "path": "packs/trust-gxt.wmsoundpack",
-      "sha256": "61c4dc6f8e647bcd46d12f30b30f4575468870754859073370e41ddde8be2664",
-      "sizeBytes": 208754,
+      "sha256": "ed59775d9b782c8746ec4910ed4fd4da02a7513bf437a7e16adf24ee0a219f00",
+      "sizeBytes": 143303,
       "previews": [
         "previews/trust-gxt.png"
       ],

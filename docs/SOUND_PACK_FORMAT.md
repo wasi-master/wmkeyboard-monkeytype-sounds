@@ -49,7 +49,7 @@ Two rules, both enforced on install:
   "gain": 1.0,
 
   "press": ["sounds/1.wav", "sounds/2.wav", "sounds/3.wav"],
-  "release": [],
+  "release": ["sounds/1-up.wav", "sounds/2-up.wav", "sounds/3-up.wav"],
 
   "roles": {
     "space":    { "press": ["sounds/space-1.wav"] },
@@ -78,7 +78,7 @@ Two rules, both enforced on install:
 | `packVersion` | semver string | `"1.0.0"` | Independent of the addon entry's `version`; the app shows the addon's. |
 | `description` | string | `""`    | |
 | `gain`        | number | `1.0`   | Clamped to `0.0…1.0`. See [Gain is attenuation only](#gain-is-attenuation-only). |
-| `release`     | array of string | `[]` | Key-**up** recordings. Accepted and validated today, **not yet played** — see [Known gaps](#known-gaps). |
+| `release`     | array of string | `[]` | Key-**up** recordings, played when the finger lifts. Empty means silence on key-up, which is right for anything that is one event. See [Key-down and key-up](#key-down-and-key-up). |
 | `roles`       | object | `{}`    | Per-key-role overrides. See below. |
 
 Unknown top-level fields are ignored, so a later format version can add one
@@ -120,10 +120,40 @@ version that adds, say, `"emoji"` still installs and still works.
 > this repository fills a role slot; the slots exist for people recording their
 > own board, where the spacebar genuinely is a different noise.
 
+## Key-down and key-up
+
+A keystroke has two halves and a mechanical keyboard makes a noise at both: the
+switch actuating under the finger, and the stem returning when it lifts. `press`
+is the first, `release` is the second, and the app plays each at the moment it
+happens — hold a key and the second sound waits for you.
+
+Both are optional beyond the rule that `press` must have at least one entry. An
+empty `release` means **silence on key-up**, not a fallback to `press`: most
+sounds worth typing on — a beep, a pop, an interface click — are one event, and
+giving them an invented second one would double every keystroke.
+
+Roles and the split are independent. A role fills `press`, `release`, both or
+neither, and each field falls back to the pack's top-level list on its own — so
+a `space` role that names only `press` still plays the pack's default key-up.
+
+> **The packs in this repository are cut, not recorded that way.** Monkeytype
+> plays one file per key press, so its switch recordings hold both halves in the
+> same file, with the return 100-200 ms behind the press. The importer finds the
+> boundary and cuts there; `tools/catalogue.py` decides which sets that applies
+> to, because a detector cannot tell a key coming back up from the second half
+> of a punch. See the README.
+
+If you are recording your own board, record the two halves as separate files
+from the start and skip all of that.
+
 ## Variants
 
 Every `press` and `release` is a **list**, and the app picks one entry per
 keystroke.
+
+The two lists are drawn from **independently** — `press[3]` and `release[3]` are
+not a pair, and the app never treats them as one. A pack whose lists are
+different lengths is fine.
 
 The pick is uniform random with one rule on top: **the same variant is never
 played twice in a row** while the list has more than one entry. Monkeytype picks
@@ -133,8 +163,9 @@ a third of them, and a repeat is exactly the thing the variants exist to avoid.
 The constraint costs one integer of state per role and is the whole reason a
 pack sounds like a keyboard instead of a loop.
 
-Each role tracks its own last-played index, so alternating between the spacebar
-and letters never makes either repeat.
+Each role tracks its own last-played index, per half, so alternating between the
+spacebar and letters never makes either repeat and a long run of key-ups does
+not depend on how many letters were typed between them.
 
 ### Limits
 
@@ -221,10 +252,6 @@ install that did nothing.
 
 ## Known gaps
 
-- **`release` is not played.** The field is specified, validated and preserved
-  so packs recorded with key-up samples do not have to be re-cut later, but WM
-  Keyboard's feedback hook fires on pointer-down only. Nothing in this
-  repository ships release samples.
 - **No per-key (as opposed to per-role) mapping.** Mechvibes-style packs address
   individual key codes. Roles cover the case that is audible on a phone — the
   spacebar — without asking a publisher to record 104 keys for a keyboard that

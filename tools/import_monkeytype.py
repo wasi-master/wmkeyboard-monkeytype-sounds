@@ -10,7 +10,9 @@ this script from a clean checkout reproduces it byte for byte:
     `frontend/src/ts/constants/sounds.ts` for the variant counts.
 3.  List `frontend/static/sounds` from the git tree at that sha.
 4.  Download each `.wav`, cross-checking the count against `sounds.ts`.
-5.  Normalise the set (see `process_set`) and write a `.wmsoundpack`.
+5.  Normalise the set (see `process_set`), cut the key-up half out of each
+    recording where the catalogue says there is one (`split_set`), and write a
+    `.wmsoundpack`.
 6.  Merge mechanical fields into `wmkeyboard-repo.json`, leaving prose alone.
 7.  Write `UPSTREAM.json` — the pin, and a blob sha per source file.
 
@@ -46,7 +48,7 @@ from urllib.request import Request, urlopen
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from catalogue import CLICK_SETS, EXTRA_SETS, SYNTHESIZED  # noqa: E402
+from catalogue import CLICK_SETS, EXTRA_SETS, SPLIT, SYNTHESIZED, WHOLE  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 PACKS = ROOT / "packs"
@@ -87,6 +89,44 @@ PRE_ROLL_MS = 1.0
 # tail ending on a non-zero sample, which is a click of its own.
 FADE_IN_MS = 0.4
 FADE_OUT_MS = 4.0
+
+# --- the key-up split ---------------------------------------------------------
+#
+# A switch recording holds two events: the stem going down, and the stem coming
+# back up 100-200 ms later at a fraction of the level. Monkeytype plays the
+# whole file on key-down, so its key-up tick fires on a timer. WM Keyboard has a
+# key-up slot, so a set the catalogue marks `SPLIT` is cut in two and each half
+# plays when it actually happens.
+#
+# The cut is found, not assumed: a fixed 100 ms would land mid-decay on a set
+# recorded a little slower and clip the release's attack on one recorded faster.
+#
+# How far past the press's peak the second event must be. Under this and it is
+# the press's own body — a clicky switch's jacket tick sits ~5 ms behind the
+# strike and belongs to the key going down.
+SPLIT_MIN_GAP_MS = 20.0
+# How loud it must be, against the press's peak. A real key-up is 7-50% of the
+# press on these sets; 5% is under all of them and still well clear of the
+# noise floor.
+SPLIT_MIN_LEVEL = 0.05
+# And how far it must rise out of the decay it interrupts. This is the test
+# that separates "a second event" from "a bump on the way down": 3x is about
+# +9.5 dB, which no exponential tail does to itself.
+SPLIT_MIN_RISE = 3.0
+# Window the envelope is smoothed over before any of the above is measured.
+# Wide enough that one stray sample is not a peak, narrow enough to keep a
+# 5 ms tick.
+SPLIT_ENVELOPE_MS = 4.0
+# The cut lands this far before the quietest point between the two events, so
+# the press's fade-out and the key-up's fade-in both happen in near-silence
+# rather than across either transient.
+SPLIT_BACKOFF_MS = 2.0
+# A key-up shorter than this is a click artefact, not a recording.
+SPLIT_MIN_RELEASE_MS = 15.0
+# Below this share of a set yielding a key-up, the split is refused for the
+# whole set: a pack whose release fires on some keystrokes and not others reads
+# as broken rather than as varied.
+SPLIT_MIN_COVERAGE = 0.6
 
 
 # ---------------------------------------------------------------- http
@@ -231,7 +271,35 @@ def write_wav(samples: np.ndarray, rate: int) -> bytes:
     return buffer.getvalue()
 
 
-def process_set(variants: list[tuple[str, bytes]], raw_mode: bool) -> list[tuple[str, bytes]]:
+def fade_in(samples: np.ndarray, rate: int) -> None:
+    """Kill the DC step a hard cut leaves at the head. Edits in place."""
+    n = min(int(rate * FADE_IN_MS / 1000.0), samples.size)
+    if n > 1:
+        samples[:n] *= np.linspace(0.0, 1.0, n)
+
+
+def fade_out(samples: np.ndarray, rate: int) -> None:
+    """Stop the tail landing on a non-zero sample, which is a click of its own."""
+    n = min(int(rate * FADE_OUT_MS / 1000.0), samples.size)
+    if n > 1:
+        samples[-n:] *= np.linspace(1.0, 0.0, n)
+
+
+def trim(samples: np.ndarray, rate: int, floor: float) -> np.ndarray:
+    """Drop the leader before the first audible sample and the silence after."""
+    audible = np.flatnonzero(np.abs(samples) >= floor)
+    if not audible.size:
+        return samples
+    pre_roll = int(rate * PRE_ROLL_MS / 1000.0)
+    start = max(0, int(audible[0]) - pre_roll)
+    end = min(samples.size, int(audible[-1]) + 1)
+    return samples[start:end]
+
+
+def process_set(
+    variants: list[tuple[str, bytes]],
+    raw_mode: bool,
+) -> list[tuple[str, np.ndarray, int]]:
     """Trim, fade and level a whole set of variants together.
 
     The levelling is the part worth being careful about: **one gain for the
@@ -239,11 +307,15 @@ def process_set(variants: list[tuple[str, bytes]], raw_mode: bool) -> list[tuple
     its own would flatten exactly the differences the variants exist to create —
     a set of ten switch recordings would come out ten identical volumes, and the
     randomisation would stop being audible.
+
+    The same reasoning is why this returns samples rather than WAV bytes:
+    :func:`split_set` runs after it and has to cut *levelled* audio, so that a
+    key-up stays as much quieter than its key-down as it was in the room.
     """
     decoded = [(name, *read_wav(data)) for name, data in variants]
 
     if raw_mode:
-        return [(name, write_wav(samples, rate)) for name, samples, rate in decoded]
+        return decoded
 
     peak = max((float(np.max(np.abs(s))) for _, s, _ in decoded), default=0.0)
     if peak <= 0.0:
@@ -252,31 +324,150 @@ def process_set(variants: list[tuple[str, bytes]], raw_mode: bool) -> list[tuple
     floor = peak * (10.0 ** (TRIM_FLOOR_DB / 20.0))
     gain = (10.0 ** (TARGET_PEAK_DBFS / 20.0)) / peak
 
-    out: list[tuple[str, bytes]] = []
+    out: list[tuple[str, np.ndarray, int]] = []
     for name, samples, rate in decoded:
-        audible = np.flatnonzero(np.abs(samples) >= floor)
-        if audible.size:
-            pre_roll = int(rate * PRE_ROLL_MS / 1000.0)
-            start = max(0, int(audible[0]) - pre_roll)
-            end = min(samples.size, int(audible[-1]) + 1)
-            samples = samples[start:end]
-
-        samples = samples * gain
-
-        fade_in = min(int(rate * FADE_IN_MS / 1000.0), samples.size)
-        if fade_in > 1:
-            samples[:fade_in] *= np.linspace(0.0, 1.0, fade_in)
-        fade_out = min(int(rate * FADE_OUT_MS / 1000.0), samples.size)
-        if fade_out > 1:
-            samples[-fade_out:] *= np.linspace(1.0, 0.0, fade_out)
-
-        out.append((name, write_wav(samples, rate)))
+        samples = trim(samples, rate, floor) * gain
+        fade_in(samples, rate)
+        fade_out(samples, rate)
+        out.append((name, samples, rate))
     return out
+
+
+def release_policy(meta: dict) -> str:
+    """A set's `release` policy, refusing to guess one it does not have.
+
+    Deliberately not defaulted. Whether a recording holds the key coming back
+    up is a thing somebody has to listen for, and a set that silently defaulted
+    to WHOLE would ship half a keyboard with nothing to say it had.
+    """
+    policy = meta.get("release")
+    if policy in (SPLIT, WHOLE):
+        return policy
+    raise SystemExit(
+        f"error: {meta['id']} has no 'release' policy in tools/catalogue.py. "
+        f"Set it to SPLIT (the recordings hold the key coming back up) or "
+        f"WHOLE (they do not) and re-run.",
+    )
+
+
+def envelope(samples: np.ndarray, rate: int) -> np.ndarray:
+    """Rectified and smoothed, the shape the eye sees in an editor."""
+    width = max(1, int(rate * SPLIT_ENVELOPE_MS / 1000.0))
+    return np.convolve(np.abs(samples), np.ones(width) / width, mode="same")
+
+
+def find_key_up(samples: np.ndarray, rate: int) -> int | None:
+    """Where the key coming back up begins, or None if nothing does.
+
+    Walks forward from the press's peak keeping a running minimum — the
+    quietest the recording has been since the strike — and looks for a later
+    local maximum that rises :data:`SPLIT_MIN_RISE` times out of it. A decaying
+    tail never does that to itself, which is what makes the test mean "a second
+    event happened" rather than "it got louder for a moment".
+
+    The returned index is just before the quietest point between the two, not
+    at the second peak: the key-up needs its own attack, and the attack is the
+    part between them.
+    """
+    env = envelope(samples, rate)
+    peak_at = int(np.argmax(env))
+    top = float(env[peak_at])
+    gap = int(rate * SPLIT_MIN_GAP_MS / 1000.0)
+    tail = env[peak_at:]
+    if top <= 0.0 or tail.size <= gap + 2:
+        return None
+
+    # Guarded against a zero floor, so the rise ratio stays finite in digital
+    # silence — an upstream file padded with exact zeros would otherwise make
+    # every later sample an infinite rise.
+    trough = np.maximum(np.minimum.accumulate(tail), top * 1e-6)
+    best_at, best_rise = None, 0.0
+    for index in range(gap, tail.size - 1):
+        level = tail[index]
+        if level < top * SPLIT_MIN_LEVEL:
+            continue
+        if level < tail[index - 1] or level < tail[index + 1]:
+            continue
+        rise = level / trough[index]
+        if rise >= SPLIT_MIN_RISE and rise > best_rise:
+            best_rise, best_at = rise, index
+    if best_at is None:
+        return None
+
+    quietest = int(np.argmin(tail[:best_at + 1]))
+    backoff = int(rate * SPLIT_BACKOFF_MS / 1000.0)
+    return max(peak_at + 1, peak_at + quietest - backoff)
+
+
+def split_set(
+    processed: list[tuple[str, np.ndarray, int]],
+    policy: str,
+    ident: str,
+) -> tuple[list[tuple[str, bytes]], list[tuple[str, bytes]]]:
+    """A processed set as (key-down variants, key-up variants), both encoded.
+
+    ``WHOLE`` sets come back exactly as they went in, with an empty key-up list.
+
+    A ``SPLIT`` set is cut per recording, and a recording the cut does not find
+    a key-up in is **dropped from the set** rather than kept whole. That looks
+    wasteful and is the point: the app draws from the two lists independently,
+    so a whole recording left in `press` would play its own baked-in key-up
+    *and* then a key-up sample when the finger actually lifts — a double tick on
+    some keystrokes and not others. Losing three of ten recordings costs a
+    little variation; keeping them costs the pack its timing, which is the whole
+    reason to split it.
+
+    If too few recordings yield a key-up the split is abandoned for the set
+    instead, and it ships whole exactly as before — see
+    :data:`SPLIT_MIN_COVERAGE`.
+    """
+    whole = [(name, write_wav(samples, rate)) for name, samples, rate in processed]
+    if policy != SPLIT:
+        return whole, []
+
+    press: list[tuple[str, bytes]] = []
+    release: list[tuple[str, bytes]] = []
+    dropped: list[str] = []
+    floor_db = 10.0 ** (TRIM_FLOOR_DB / 20.0)
+    for name, samples, rate in processed:
+        stem = Path(name).stem
+        suffix = Path(name).suffix or ".wav"
+        cut = find_key_up(samples, rate)
+        tail = samples[cut:].copy() if cut is not None else np.empty(0)
+        if tail.size:
+            tail = trim(tail, rate, float(np.max(np.abs(tail))) * floor_db)
+        if cut is None or tail.size < rate * SPLIT_MIN_RELEASE_MS / 1000.0:
+            dropped.append(name)
+            continue
+        head = samples[:cut].copy()
+        fade_out(head, rate)
+        fade_in(tail, rate)
+        press.append((name, write_wav(head, rate)))
+        release.append((f"{stem}-up{suffix}", write_wav(tail, rate)))
+
+    covered = len(release) / max(len(processed), 1)
+    if covered < SPLIT_MIN_COVERAGE:
+        print(
+            f"warning: {ident} is marked SPLIT but only {len(release)}/{len(processed)} "
+            f"recordings hold a key-up; shipping it whole",
+        )
+        return whole, []
+    if dropped:
+        print(
+            f"  note: {ident} dropped {len(dropped)} recording(s) with no key-up in "
+            f"them ({', '.join(dropped)})",
+        )
+    return press, release
 
 
 # ---------------------------------------------------------------- packing
 
-def build_pack(meta: dict, variants: list[tuple[str, bytes]], author: str) -> bytes:
+def build_pack(
+    meta: dict,
+    variants: list[tuple[str, bytes]],
+    releases: list[tuple[str, bytes]],
+    author: str,
+) -> bytes:
     """A deterministic `.wmsoundpack`.
 
     Fixed timestamps and a fixed entry order, so re-running the importer with
@@ -294,7 +485,11 @@ def build_pack(meta: dict, variants: list[tuple[str, bytes]], author: str) -> by
         "description": meta["description"],
         "gain": 1.0,
         "press": [f"sounds/{name}" for name, _ in variants],
-        "release": [],
+        # The key-up halves, for a set the catalogue marks SPLIT; empty
+        # otherwise. Not paired with `press` by index — the app draws from each
+        # list on its own — but they are cut from the same recordings, so the
+        # two lists describe one board either way.
+        "release": [f"sounds/{name}" for name, _ in releases],
         # Left empty on purpose: monkeytype has no per-key sounds to import.
         # See docs/SOUND_PACK_FORMAT.md.
         "roles": {},
@@ -303,7 +498,7 @@ def build_pack(meta: dict, variants: list[tuple[str, bytes]], author: str) -> by
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
         entries = [("pack.json", json.dumps(pack_json, indent=2).encode() + b"\n")]
-        entries += [(f"sounds/{name}", data) for name, data in variants]
+        entries += [(f"sounds/{name}", data) for name, data in variants + releases]
         for name, data in entries:
             info = zipfile.ZipInfo(name, date_time=(1980, 1, 1, 0, 0, 0))
             info.compress_type = zipfile.ZIP_DEFLATED
@@ -520,7 +715,11 @@ def main() -> int:
             downloaded.append((f"{index}{suffix}", data))
 
         processed = process_set(downloaded, raw_mode=args.raw)
-        pack_bytes = build_pack(meta, processed, author)
+        # --raw imports the samples untouched, and a cut is a touch: it needs
+        # the levelled, trimmed audio to find the boundary in.
+        policy = WHOLE if args.raw else release_policy(meta)
+        press_variants, release_variants = split_set(processed, policy, meta["id"])
+        pack_bytes = build_pack(meta, press_variants, release_variants, author)
         payload = PACKS / f"{meta['id']}.wmsoundpack"
         payload.write_bytes(pack_bytes)
 
@@ -531,7 +730,11 @@ def main() -> int:
             "sizeBytes": len(pack_bytes),
         })
         sources[meta["id"]] = {path: files[path] for path in variants}
-        print(f"  {meta['id']:<22} {len(processed):>2} variant(s)  {len(pack_bytes) / 1024:>7.1f} KiB")
+        up = f" +{len(release_variants)} key-up" if release_variants else ""
+        print(
+            f"  {meta['id']:<22} {len(press_variants):>2} variant(s){up:<12}"
+            f"  {len(pack_bytes) / 1024:>7.1f} KiB",
+        )
 
     date = args.date or _dt.date.today().isoformat()
     merge_manifest(built, author, bump=args.bump, date=date)
